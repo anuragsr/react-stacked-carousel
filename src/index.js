@@ -100,7 +100,7 @@ export const StackedCarousel = ({ style, onCardChange, containerClassName, cardC
       <div className="slide-controls">
         <div className="ctn-arrows">
           <img src="assets/gig/sl-left.png" alt="" onClick={handleLeftButton}/>
-          <span>{currentIndex + 1}/{cardItems.length}</span>
+          <span>{indexes.currentIndex + 1}/{cardItems.length}</span>
           <img src="assets/gig/sl-right.png" alt="" onClick={handleRightButton}/>
         </div>
       </div>
