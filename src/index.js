@@ -101,7 +101,7 @@ export const StackedCarousel = ({ style, onCardChange, containerClassName, cardC
         <div className="ctn-arrows">
           <img src="assets/gig/sl-left.png" alt="" onClick={handleLeftButton}/>
           <span>{indexes.currentIndex + 1}/{cardItems.length}</span>
-          <img src="assets/gig/sl-right.png" alt="" onClick={handleRightButton}/>
+          <img src="assets/gig/sl-right.png" alt="" onClick={handleCardTransition}/>
         </div>
       </div>
       <ul style={{...style}} className={`${styles.cardCarousel} ${containerClassName? containerClassName : styles.carouselDefault}`}>
