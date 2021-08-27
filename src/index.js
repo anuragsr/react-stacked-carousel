@@ -1,4 +1,6 @@
-import React, { useEffect, useCallback, useState } from 'react';
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unneeded-ternary */
+import React, { useEffect, useCallback, useState, forwardRef, useImperativeHandle } from 'react';
 import styles from './styles.module.css'
 
 const defaultCardItems = [
@@ -35,7 +37,32 @@ const setCardStatus = (indexes, cardIndex) => {
   return styles.inactive;
 }
 
-export const StackedCarousel = ({ style, onCardChange, containerClassName, cardClassName, leftButton, rightButton, autoRotate=true, rotationInterval=2000, children}) => {
+// export const StackedCarousel = ({ style, onCardChange, containerClassName, cardClassName, leftButton, rightButton, autoRotate=true, rotationInterval=2000, children}) => {
+export const StackedCarousel = forwardRef(({ style, onCardChange, containerClassName, cardClassName, leftButton, rightButton, autoRotate=true, rotationInterval=2000, children}, ref) => {
+  useImperativeHandle(ref, () => ({
+    setIndex(idx) {
+      if (idx === 0) {
+        setIndexes({
+          previousIndex: cardItems.length - 1,
+          currentIndex: idx,
+          nextIndex: idx + 1
+        });
+      } else if (idx === cardItems.length - 1) {
+        setIndexes({
+          previousIndex: idx - 1,
+          currentIndex: idx,
+          nextIndex: 0
+        });
+      } else{
+        setIndexes({
+          previousIndex: idx - 1,
+          currentIndex: idx,
+          nextIndex: idx + 1
+        });
+      }
+    }
+  }));
+
   const cardItems = children || defaultCardItems;
   const [indexes, setIndexes] = useState({
     previousIndex: cardItems.length-1,
@@ -86,7 +113,7 @@ export const StackedCarousel = ({ style, onCardChange, containerClassName, cardC
     }
   }, [indexes.currentIndex]);
 
-  
+
   useEffect(() => {
     onCardChange && onCardChange(indexes);
     const transitionInterval = setInterval(() => {
@@ -94,6 +121,10 @@ export const StackedCarousel = ({ style, onCardChange, containerClassName, cardC
     }, rotationInterval);
     return () => clearInterval(transitionInterval);
   }, [handleCardTransition, indexes, autoRotate]);
+
+  // useEffect(() => {
+  //   console.log("Changed", indexes.currentIndex)
+  // }, [indexes]);
 
   return (
     <div className={`${styles.container}`}>
@@ -116,4 +147,4 @@ export const StackedCarousel = ({ style, onCardChange, containerClassName, cardC
       </div>
     </div>
   );
-}
+})
